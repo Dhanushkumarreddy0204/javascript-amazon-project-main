@@ -13,7 +13,7 @@ export function addtocart(productId) {
   });
 
   if (matchingItem) {
-    matchingItem.quantity += 1;
+    matchingItem.quantity +=1;
   } else {
     cart.push({
       productId: productId, // Ensure consistency with checkout.js
