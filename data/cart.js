@@ -25,3 +25,20 @@ export function removefromcart(productId) {
   cart = cart.filter(cartItem => cartItem.productId !== productId); // Filter out the item
   saveToStorage();
 }
+
+// Update the quantity of an item in the cart
+export function updateQuantity(productId, newQuantity) {
+  let matchingItem = cart.find(cartItem => cartItem.productId === productId);
+
+  if (matchingItem) {
+    if (newQuantity <= 0) {
+      // Remove the item if quantity is less than or equal to 0
+      cart = cart.filter(cartItem => cartItem.productId !== productId);
+    } else {
+      matchingItem.quantity = newQuantity; // Update the quantity
+    }
+    saveToStorage();
+  } else {
+    console.warn(`Item with product ID ${productId} not found in the cart.`);
+  }
+}
