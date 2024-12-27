@@ -3,3 +3,6 @@ import { products } from "../data/products.js";
 import { formatcurrency } from "./utils/money.js";
 
 let productsHtml = '';
+
+products.forEach((product) => {
+    productsHtml +=``
