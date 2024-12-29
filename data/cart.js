@@ -1,44 +1,63 @@
+
 export let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// Save the cart to localStorage
+
+
 function saveToStorage() {
-  localStorage.setItem('cart', JSON.stringify(cart));
+  localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-// Add an item to the cart
-export function addtocart(productId) {
-  let matchingItem = cart.find(cartItem => cartItem.productId === productId);
+
+export function addtocart(productId, deliveryOptionsId = '1') {
+  let matchingItem = cart.find((cartItem) => cartItem.productId === productId);
 
   if (matchingItem) {
-    matchingItem.quantity += 1; // Increment quantity if the item already exists
+    matchingItem.quantity += 1; 
+    matchingItem.deliveryOptionsId = deliveryOptionsId; 
   } else {
     cart.push({
       productId: productId,
-      quantity: 1
+      quantity: 1,
+      deliveryOptionsId: deliveryOptionsId, 
     });
   }
   saveToStorage();
 }
 
-// Remove an item from the cart
+
 export function removefromcart(productId) {
-  cart = cart.filter(cartItem => cartItem.productId !== productId); // Filter out the item
+  cart = cart.filter((cartItem) => cartItem.productId !== productId); 
   saveToStorage();
 }
 
-// Update the quantity of an item in the cart
+
 export function updateQuantity(productId, newQuantity) {
-  let matchingItem = cart.find(cartItem => cartItem.productId === productId);
+  let matchingItem = cart.find((cartItem) => cartItem.productId === productId);
 
   if (matchingItem) {
     if (newQuantity <= 0) {
-      // Remove the item if quantity is less than or equal to 0
-      cart = cart.filter(cartItem => cartItem.productId !== productId);
+      
+      cart = cart.filter((cartItem) => cartItem.productId !== productId);
     } else {
-      matchingItem.quantity = newQuantity; // Update the quantity
+      matchingItem.quantity = newQuantity; 
     }
     saveToStorage();
   } else {
     console.warn(`Item with product ID ${productId} not found in the cart.`);
   }
 }
+
+
+export function updateDeliveryOption(productId, deliveryOptionsId) {
+  let matchingItem = cart.find((cartItem) => cartItem.productId === productId);
+
+  if (matchingItem) {
+    matchingItem.deliveryOptionsId = deliveryOptionsId; 
+    saveToStorage();
+  } else {
+    console.warn(`Item with product ID ${productId} not found in the cart.`);
+  }
+}
+
+
+saveToStorage();
