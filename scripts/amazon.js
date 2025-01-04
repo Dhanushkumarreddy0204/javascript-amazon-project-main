@@ -5,4 +5,10 @@ import { formatcurrency } from "./utils/money.js";
 let productsHtml = '';
 
 products.forEach((product) => {
-    productsHtml +=``
+    productsHtml +=`<div class="product-container">
+          <div class="product-image-container">
+            <img class="product-image"
+              src="${product.image}">
+          </div>
+          `;
+        });
