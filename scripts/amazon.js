@@ -10,5 +10,9 @@ products.forEach((product) => {
             <img class="product-image"
               src="${product.image}">
           </div>
+
+           <div class="product-name limit-text-to-2-lines">
+            ${product.name}
+          </div>
           `;
         });
