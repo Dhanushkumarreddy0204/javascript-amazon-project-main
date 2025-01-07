@@ -42,5 +42,10 @@ products.forEach((product) => {
           </div>
 
           <div class="product-spacer"></div>
+
+          <div class="added-to-cart">
+            <img src="images/icons/checkmark.png">
+            Added
+          </div>
           `;
         });
