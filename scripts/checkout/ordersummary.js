@@ -15,3 +15,6 @@ export function renderOrderSummary() {
 
 cart.forEach((cartItem) => {
     const productId = cartItem.productId;
+
+    let matchingProduct = products.find((product) => product.id === productId);
+
