@@ -12,3 +12,6 @@ export function renderOrderSummary() {
   let cartSummaryHtml = '';
   let totalPrice = 0;
   let totalShipping = 0;
+
+cart.forEach((cartItem) => {
+    const productId = cartItem.productId;
