@@ -7,3 +7,8 @@ import { deliveryOptions } from "../../data/deliveryOptions.js";
 dayjs();
 
 const today = dayjs();
+
+export function renderOrderSummary() {
+  let cartSummaryHtml = '';
+  let totalPrice = 0;
+  let totalShipping = 0;
