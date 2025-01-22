@@ -34,3 +34,7 @@ cart.forEach((cartItem) => {
 
     const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
     const dateString = deliveryDate.format('dddd, MMMM D');
+
+    const productTotal = matchingProduct.priceCents * cartItem.quantity;
+    totalPrice += productTotal;
+    totalShipping += deliveryOption.priceCents;
