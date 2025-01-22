@@ -22,3 +22,12 @@ cart.forEach((cartItem) => {
       console.warn(`Product with ID ${productId} not found in products array.`);
       return; 
     }
+
+    const deliveryOptionsId = cartItem.deliveryOptionsId;
+
+    let deliveryOption;
+    deliveryOptions.forEach((option) => {
+      if (option.id === deliveryOptionsId) {
+        deliveryOption = option;
+      }
+    });
