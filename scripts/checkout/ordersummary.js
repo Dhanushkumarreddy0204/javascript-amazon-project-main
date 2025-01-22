@@ -18,3 +18,7 @@ cart.forEach((cartItem) => {
 
     let matchingProduct = products.find((product) => product.id === productId);
 
+    if (!matchingProduct) {
+      console.warn(`Product with ID ${productId} not found in products array.`);
+      return; 
+    }
