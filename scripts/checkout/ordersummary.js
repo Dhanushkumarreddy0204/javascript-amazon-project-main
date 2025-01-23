@@ -87,3 +87,10 @@ cart.forEach((cartItem) => {
       </div>
     `;
   });
+  document.querySelector('.js-order-summary').innerHTML = cartSummaryHtml;
+
+ 
+  renderPaymentSummary(totalPrice, totalShipping);
+
+  addEventListeners();
+}
