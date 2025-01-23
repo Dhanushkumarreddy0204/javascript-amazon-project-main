@@ -124,3 +124,22 @@ function deliveryOptionsHTML(matchingProduct, cartItem) {
   });
   return html;
 }
+
+function addEventListeners() {
+  
+  document.querySelectorAll('.js-delete-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      const productId = link.dataset.productId;
+      removefromcart(productId);
+
+      const container = document.querySelector(
+        `.js-cart-item-container-${productId}`
+      );
+      if (container) {
+        container.remove();
+      }
+
+      updateCartQuantity();
+    });
+  });
+
