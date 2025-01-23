@@ -94,3 +94,33 @@ cart.forEach((cartItem) => {
 
   addEventListeners();
 }
+function deliveryOptionsHTML(matchingProduct, cartItem) {
+  let html = '';
+  deliveryOptions.forEach((deliveryOption) => {
+    const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
+    const dateString = deliveryDate.format('dddd, MMMM D');
+    const priceString = deliveryOption.priceCents === 0 ? 'Free' : `$${formatcurrency(deliveryOption.priceCents)} - `;
+
+    const isChecked = deliveryOption.id === cartItem.deliveryOptionsId;
+    html += `
+      <div class="delivery-option">
+        <input 
+          type="radio"
+          class="delivery-option-input"
+          name="delivery-option-${matchingProduct.id}"
+          value="${deliveryOption.id}"
+          data-product-id="${matchingProduct.id}"
+          ${isChecked ? 'checked' : ''} 
+        />
+        <div>
+          <div class="delivery-option-date">
+            ${dateString}
+          </div>
+          <div class="delivery-option-price">
+            ${priceString} Shipping
+          </div>
+        </div>
+      </div>`;
+  });
+  return html;
+}
