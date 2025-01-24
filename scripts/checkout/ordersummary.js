@@ -189,3 +189,30 @@ function addEventListeners() {
         return;
       }
 
+      const newQuantity = parseInt(quantityInput.value, 10) || 0; 
+
+      if (newQuantity < 0 || newQuantity >= 1000) {
+        alert('Quantity must be at least 0 and less than 1000');
+        return;
+      }
+      updateQuantity(productId, newQuantity);
+
+      const container = document.querySelector(
+        `.js-cart-item-container-${productId}`
+      );
+      if (container) {
+        container.classList.remove('is-editing-quantity');
+      }
+      const quantityLabel = document.querySelector(
+        `.js-quantity-label-${productId}`
+      );
+      if (quantityLabel) {
+        quantityLabel.innerHTML = newQuantity;
+      }
+
+      updateCartQuantity();
+    });
+  });
+}
+
+
