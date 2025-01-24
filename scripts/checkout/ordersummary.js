@@ -216,3 +216,26 @@ function addEventListeners() {
 }
 
 
+function updateCartQuantity() {
+  let cartQuantity = 0;
+
+  cart.forEach((cartItem) => {
+    cartQuantity += cartItem.quantity;
+  });
+
+  document.querySelector('.js-return-to-homepage').innerHTML = `${cartQuantity} items`;
+}
+
+
+function renderPaymentSummary(totalPrice, totalShipping) {
+  const totalBeforeTax = totalPrice + totalShipping;
+  const tax = totalBeforeTax * 0.10; 
+  const orderTotal = totalBeforeTax + tax;
+
+  document.querySelector('.payment-summary-money').innerHTML = `$${formatcurrency(totalPrice)}`;
+  document.querySelector('.payment-summary-row .payment-summary-money').innerHTML = `$${formatcurrency(totalShipping)}`;
+  document.querySelector('.subtotal-row .payment-summary-money').innerHTML = `$${formatcurrency(totalBeforeTax)}`;
+  document.querySelector('.payment-summary-row.total-row .payment-summary-money').innerHTML = `$${formatcurrency(orderTotal)}`;
+}
+
+
