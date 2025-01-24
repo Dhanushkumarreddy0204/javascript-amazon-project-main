@@ -143,3 +143,23 @@ function addEventListeners() {
     });
   });
 
+  
+  document.querySelectorAll('.delivery-option-input').forEach((input) => {
+    input.addEventListener('change', (event) => {
+      const selectedDeliveryOptionId = event.target.value; 
+      const productId = event.target.dataset.productId; 
+
+      updateDeliveryOption(productId, selectedDeliveryOptionId); 
+
+      
+      const selectedOption = deliveryOptions.find(option => option.id === selectedDeliveryOptionId);
+      const deliveryDate = today.add(selectedOption.deliveryDays, 'days');
+      const dateString = deliveryDate.format('dddd, MMMM D');
+      const deliveryDateElement = document.querySelector(`.js-delivery-date-${productId}`);
+
+      if (deliveryDateElement) {
+        deliveryDateElement.textContent = dateString;
+      }
+    });
+  });
+
