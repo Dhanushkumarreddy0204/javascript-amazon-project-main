@@ -176,3 +176,16 @@ function addEventListeners() {
     });
   });
 
+  
+  document.querySelectorAll('.js-save-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      const productId = link.dataset.productId;
+
+      const quantityInput = document.querySelector(
+        `.js-quantity-input-${productId}`
+      );
+      if (!quantityInput) {
+        console.error(`Quantity input for product ID ${productId} not found.`);
+        return;
+      }
+
