@@ -23,3 +23,7 @@ products.forEach((product) => {
               ${product.rating.count}
             </div>
           </div>
+
+          <div class="product-price">
+            $${formatcurrency(product.priceCents)}
+          </div>
