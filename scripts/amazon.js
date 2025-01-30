@@ -58,3 +58,14 @@ products.forEach((product) => {
 });
 
 document.querySelector('.js-products-grid').innerHTML=productsHtml;
+
+function updatecartquantity(){
+  
+  let cartQuantity = 0;
+
+  cart.forEach((cartitem) => {
+    cartQuantity += cartitem.quantity;
+  });
+
+  document.querySelector('.js-cart-quantity').innerHTML=cartQuantity;
+}
