@@ -204,7 +204,6 @@
     width: 100%;
     margin-bottom: 15px;
   }
-
   .product-actions {
     /* grid-column: auto; undos grid-column: 2; from above.
        This element will now be placed in its normal column
