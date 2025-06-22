@@ -7,8 +7,8 @@
 ## ✨ Screenshots
 
 <p align="center">
-   <img src="/javascript-amazon-project-main/image/Screenshot 2025-06-22 183906.png" alt="Product Listing Screenshot" width="400" style="margin: 10px;">
-   <img src="/javascript-amazon-project-main/image/Screenshot 2025-06-22 183935.png" alt="Cart and Checkout Screenshot" width="400" style="margin: 10px;">
+   <img src="./image/Screenshot 2025-06-22 183906.png" alt="Product Listing Screenshot" width="400" style="margin: 10px;">
+   <img src="./image/Screenshot 2025-06-22 183935.png" alt="Cart and Checkout Screenshot" width="400" style="margin: 10px;">
 </p>
 
 ---
