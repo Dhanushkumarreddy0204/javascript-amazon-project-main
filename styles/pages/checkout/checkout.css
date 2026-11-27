@@ -235,3 +235,12 @@
 .is-editing-quantity .update-quantity-link {
   display: none;
 }
+.product-quantity button {
+  background: transparent;
+  border: 0;
+  padding: 2px;
+  font: inherit;
+  cursor: pointer;
+}
+.quantity-input { width: 4em; }
+.place-order-button:disabled { opacity: 0.55; cursor: default; }

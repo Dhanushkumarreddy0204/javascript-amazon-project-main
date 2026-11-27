@@ -1,10 +1,15 @@
-import { cart,addtocart } from "../data/cart.js";
+import { addToCart, displayCount } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatcurrency } from "./utils/money.js";
 
 let productsHtml = '';
 
-products.forEach((product) => {
+const query = (new URLSearchParams(location.search).get('q') || '').trim();
+document.querySelector('.search-bar').value = query;
+const matches = products.filter(product =>
+  [product.name, ...product.keywords].join(' ').toLowerCase().includes(query.toLowerCase())
+);
+matches.forEach((product) => {
     productsHtml += `
     <div class="product-container">
           <div class="product-image-container">
@@ -57,24 +62,18 @@ products.forEach((product) => {
         </div>`;
 });
 
-document.querySelector('.js-products-grid').innerHTML=productsHtml;
+document.querySelector('.js-products-grid').innerHTML = productsHtml || '<p>No matching products. <a href="amazon.html">View all products</a></p>';
+displayCount();
 
-
-function updatecartquantity(){
-  
-  let cartQuantity = 0;
-
-  cart.forEach((cartitem) => {
-    cartQuantity += cartitem.quantity;
+document.querySelectorAll('.js-add-to-cart').forEach(button => {
+  button.addEventListener('click', async () => {
+    const card = button.closest('.product-container');
+    try {
+      await addToCart(button.dataset.productId, Number(card.querySelector('select').value));
+      displayCount();
+      card.querySelector('.added-to-cart').style.opacity = 1;
+    } catch (error) {
+      alert(error.message);
+    }
   });
-
-  document.querySelector('.js-cart-quantity').innerHTML=cartQuantity;
-}
-document.querySelectorAll('.js-add-to-cart').forEach((button) => {
-    button.addEventListener('click', () => {
-      const productId= button.dataset.productId;
-      addtocart(productId);
-      updatecartquantity();
-
-    });
 });
