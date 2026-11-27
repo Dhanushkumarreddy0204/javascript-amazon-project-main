@@ -27,13 +27,10 @@
         </a>
       </div>
 
-      <div class="amazon-header-middle-section">
-        <input class="search-bar" type="text" placeholder="Search">
-
-        <button class="search-button">
-          <img class="search-icon" src="images/icons/search-icon.png">
-        </button>
-      </div>
+      <form class="amazon-header-middle-section" action="amazon.html" role="search">
+        <input class="search-bar" name="q" type="search" placeholder="Search" aria-label="Search products">
+        <button class="search-button" aria-label="Search"><img class="search-icon" src="images/icons/search-icon.png" alt=""></button>
+      </form>
 
       <div class="amazon-header-right-section">
         <a class="orders-link header-link" href="orders.html">
@@ -56,7 +53,7 @@
     </div>
 
     
-    <script type='module' src="/scripts/amazon.js"></script>
+    <script type='module' src="scripts/amazon.js"></script>
   </body>
 </html>
 
