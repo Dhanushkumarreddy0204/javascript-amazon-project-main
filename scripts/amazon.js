@@ -1,105 +1,62 @@
-import { cart, addToCart, calculateCartQuantity } from "../data/cart.js";
-import { products, loadProducts } from "../data/products.js";
-import { formatCurrency } from "./utils/money.js";
+import { addToCart } from '../data/cart.js';
+import { products, loadProducts } from '../data/products.js';
+import { updateCartBadge, showMessage, showCatalogError, showCartError } from './shared.js';
 
-
-loadProducts(renderProductsGrid);
+const query = (new URLSearchParams(location.search).get('q') ?? '').trim();
+document.querySelector('.search-bar').value = query;
+updateCartBadge();
+loadProducts().then(renderProductsGrid).catch(showCatalogError);
 
 function renderProductsGrid() {
-  let productsHtml = '';
-
-  products.forEach((product) => {
-    productsHtml += `
-      <div class="product-container">
-            <div class="product-image-container">
-              <img class="product-image"
-                src="${product.image}">
-            </div>
-
-            <div class="product-name limit-text-to-2-lines">
-              ${product.name}
-            </div>
-
-            <div class="product-rating-container">
-              <img class="product-rating-stars"
-                src="${product.getStarsUrl()}">
-              <div class="product-rating-count link-primary">
-                ${product.rating.count}
-              </div>
-            </div>
-
-            <div class="product-price">
-              ${product.getPrice()}
-            </div>
-
-            <div class="product-quantity-container">
-              <select class="js-quantity-selector-${product.id}">
-                <option selected value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-              </select>
-            </div>
-
-            <div class="product-spacer"></div>
-
-            <div class="added-to-cart js-added-to-cart-${product.id}">
-              <img src="images/icons/checkmark.png">
-              Added
-            </div>
-
-            <button class="add-to-cart-button button-primary js-add-to-cart"
-            data-product-id="${product.id}">
-              Add to Cart
-            </button>
-          </div>`;
+  const terms = query.toLowerCase().split(/\s+/);
+  const matches = products.filter(product => {
+    const searchable = [product.name, ...product.keywords].join(' ').toLowerCase();
+    return terms.every(term => searchable.includes(term));
   });
+  const grid = document.querySelector('.js-products-grid');
+  if (!matches.length) {
+    showMessage(`No products match “${query}”. `);
+    const reset = document.createElement('a');
+    reset.href = 'amazon.html';
+    reset.textContent = 'View all products';
+    document.querySelector('.shop-message').append(reset);
+    return;
+  }
+  grid.innerHTML = matches.map(product => `
+    <article class="product-container">
+      <div class="product-image-container"><img class="product-image" src="${product.image}" alt=""></div>
+      <div class="product-name limit-text-to-2-lines">${product.name}</div>
+      <div class="product-rating-container">
+        <img class="product-rating-stars" src="${product.getStarsUrl()}" alt="${product.rating.stars} out of 5 stars">
+        <span class="product-rating-count">${product.rating.count}</span>
+      </div>
+      <div class="product-price">${product.getPrice()}</div>
+      <div class="product-quantity-container">
+        <select aria-label="Quantity for ${product.name.replaceAll('"', '&quot;')}">
+          ${Array.from({ length: 10 }, (_, i) => `<option>${i + 1}</option>`).join('')}
+        </select>
+        ${product.sizeChartLink ? `<a class="link-primary" href="${product.sizeChartLink}" target="_blank" rel="noopener">Size chart</a>` : ''}
+      </div>
+      <div class="product-spacer"></div>
+      <div class="added-to-cart" aria-hidden="true"><img src="images/icons/checkmark.png" alt="">Added</div>
+      <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${product.id}">Add to Cart</button>
+    </article>`).join('');
 
-  document.querySelector('.js-products-grid').innerHTML = productsHtml;
-
-  const addedMessageTimeouts = {};
-
-  document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+  grid.querySelectorAll('.js-add-to-cart').forEach(button => {
+    const card = button.closest('.product-container');
+    const message = card.querySelector('.added-to-cart');
+    let timer;
     button.addEventListener('click', () => {
-      const productId = button.dataset.productId;
-
-      const quantitySelector = document.querySelector(
-        `.js-quantity-selector-${productId}`
-      );
-      const quantity = Number(quantitySelector.value);
-
-      addToCart(productId, quantity);
-      updateCartQuantity();
-
-      const addedMessage = document.querySelector(
-        `.js-added-to-cart-${productId}`
-      );
-
-      addedMessage.classList.add('added-to-cart-visible');
-
-      const previousTimeoutId = addedMessageTimeouts[productId];
-      if (previousTimeoutId) {
-        clearTimeout(previousTimeoutId);
+      try {
+        addToCart(button.dataset.productId, Number(card.querySelector('select').value));
+        updateCartBadge();
+        showMessage('');
+        message.classList.add('added-to-cart-visible');
+        clearTimeout(timer);
+        timer = setTimeout(() => message.classList.remove('added-to-cart-visible'), 2000);
+      } catch (error) {
+        showCartError(error);
       }
-
-      const timeoutId = setTimeout(() => {
-        addedMessage.classList.remove('added-to-cart-visible');
-      }, 2000);
-
-      addedMessageTimeouts[productId] = timeoutId;
     });
   });
 }
-
-function updateCartQuantity() {
-  const cartQuantity = calculateCartQuantity();
-  document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-}
-
-updateCartQuantity();

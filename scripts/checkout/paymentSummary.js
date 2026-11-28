@@ -1,60 +1,35 @@
-import { cart, calculateCartQuantity } from "../../data/cart.js";
-import { getProduct } from "../../data/products.js";
-import { getDeliveryOption } from "../../data/deliveryOptions.js";
-import { formatCurrency } from "../utils/money.js";
+import { cart, calculateCartQuantity } from '../../data/cart.js';
+import { calculateTotals, placeOrder } from '../../data/orders.js';
+import { formatCurrency } from '../utils/money.js';
+import { showCartError } from '../shared.js';
 
 export function renderPaymentSummary() {
-    let productPriceCents = 0;
-    let shippingPriceCents = 0;
+  const summary = document.querySelector('.js-payment-summary');
+  const totals = calculateTotals();
+  const rows = [
+    [`Items (${calculateCartQuantity()})`, totals.itemsCents, ''],
+    ['Shipping &amp; handling', totals.shippingCents, ''],
+    ['Total before tax', totals.beforeTaxCents, 'subtotal-row'],
+    ['Estimated tax (10%)', totals.taxCents, ''],
+    ['Order total', totals.totalCents, 'total-row']
+  ];
+  summary.hidden = false;
+  summary.innerHTML = `<div class="payment-summary-title">Order Summary</div>
+    ${rows.map(([label, cents, style]) => `<div class="payment-summary-row ${style}">
+      <div>${label}</div><div class="payment-summary-money">$${formatCurrency(cents)}</div>
+    </div>`).join('')}
+    <button class="place-order-button button-primary" ${cart.length ? '' : 'disabled'}>Place your order</button>`;
 
-    cart.forEach((cartItem) => {
-        const product = getProduct(cartItem.productId);
-        productPriceCents += product.priceCents * cartItem.quantity;
-
-        const deliveryOption = getDeliveryOption(cartItem.deliveryOptionsId);
-        shippingPriceCents += deliveryOption.priceCents;
-    });
-
-    const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
-    const taxCents = totalBeforeTaxCents * 0.1;
-    const totalCents = totalBeforeTaxCents + taxCents;
-
-    const cartQuantity = calculateCartQuantity();
-
-    const paymentSummaryHTML = `
-    <div class="payment-summary-title">
-      Order Summary
-    </div>
-
-    <div class="payment-summary-row">
-      <div>Items (${cartQuantity}):</div>
-      <div class="payment-summary-money">$${formatCurrency(productPriceCents)}</div>
-    </div>
-
-    <div class="payment-summary-row">
-      <div>Shipping &amp; handling:</div>
-      <div class="payment-summary-money">$${formatCurrency(shippingPriceCents)}</div>
-    </div>
-
-    <div class="payment-summary-row subtotal-row">
-      <div>Total before tax:</div>
-      <div class="payment-summary-money">$${formatCurrency(totalBeforeTaxCents)}</div>
-    </div>
-
-    <div class="payment-summary-row">
-      <div>Estimated tax (10%):</div>
-      <div class="payment-summary-money">$${formatCurrency(taxCents)}</div>
-    </div>
-
-    <div class="payment-summary-row total-row">
-      <div>Order total:</div>
-      <div class="payment-summary-money">$${formatCurrency(totalCents)}</div>
-    </div>
-
-    <button class="place-order-button button-primary">
-      Place your order
-    </button>
-  `;
-
-    document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
+  const button = summary.querySelector('button');
+  button.onclick = () => {
+    if (button.disabled) return;
+    button.disabled = true;
+    try {
+      placeOrder();
+      location.assign('orders.html');
+    } catch (error) {
+      button.disabled = false;
+      showCartError(error);
+    }
+  };
 }

@@ -211,8 +211,20 @@
 }
 
 .quantity-input{
-  width: 30px;
+  width: 4em;
   display: none;
+}
+
+.product-quantity button {
+  background: transparent;
+  border: 0;
+  padding: 2px;
+  font: inherit;
+}
+
+.delivery-option-date,
+.delivery-option-price {
+  display: block;
 }
 
 .save-quantity-link {

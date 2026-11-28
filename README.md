@@ -1,65 +1,27 @@
-# JavaScript Amazon Clone 🛒
+# JavaScript Amazon Clone
 
-**JavaScript Amazon Clone** is a sleek, client-side replica of Amazon’s e-commerce experience—crafted with vanilla JavaScript, HTML, and CSS. Browse products, manage your cart, checkout, view order history, and track shipments, all in a seamless UI!
+A browser-based shopping demo built with HTML, CSS, and vanilla JavaScript. The catalog includes 42 products, with photos, prices, ratings, and searchable keywords.
 
----
+## Run locally
 
-## ✨ Screenshots
+From the project root, start a static HTTP server:
 
-<p align="center">
-   <img src="./image/Screenshot 2025-06-22 183906.png" alt="Product Listing Screenshot" width="400" style="margin: 10px;">
-   <img src="./image/Screenshot 2025-06-22 183935.png" alt="Cart and Checkout Screenshot" width="400" style="margin: 10px;">
-</p>
+```sh
+python -m http.server 8000
+```
 
----
+Open [the catalog](http://localhost:8000/amazon.html). An editor's Live Server extension also works. Serve the whole folder so the browser can load JavaScript modules and `backend/products.json`.
 
-## 🚀 Features
+## Shopping flow
 
-- **Product Browsing:** Explore items with images, prices, and descriptions.
-- **Cart Functionality:** Add, update, or remove items; view running total.
-- **Checkout Process:** Enter shipping/payment info and confirm orders.
-- **Order History:** Review past orders with details and dates.
-- **Order Tracking:** Simulated shipment status updates.
-- **Backend Simulation:** Optional API endpoints for data operations (Express).
-- **Persistent State:** Cart and orders stored in `localStorage` or backend.
+1. Search by product name or keyword, choose a quantity, and add it to the cart.
+2. Open checkout to change quantities, remove products, or select delivery for each item. Shipping applies once per product line. The demo estimates 10% tax on items and shipping, rounded to the nearest cent.
+3. Select **Place your order** to save a receipt and clear the cart. This demo checkout records orders locally without collecting payment.
+4. Open **Your Orders** to see saved receipts, add one unit of a product again, or track a specific item. Simulated shipments switch to Shipped halfway through the selected delivery period and Delivered on arrival.
 
----
+The cart survives refreshes within the tab using session storage. Orders use local storage and remain available across visits in the same browser profile at the same site address.
 
-## 🔧 Technologies Used
+## Screenshots
 
-- **Front-end:** HTML5, CSS3 (Flexbox/Grid), JavaScript (ES6 modules, callbacks/promises)
-- **Backend (Optional):** Node.js, Express.js, `data/*.json` files
-- **Storage:** `localStorage` or mock API endpoints
-- **Bundling:** None—static pages or Express serving frontend/backend
-
----
-
-## 💾 Installation & Setup
-
-1. **Clone the repository:**
-
-    ```bash
-    git clone https://github.com/Dhanushkumarreddy0204/javascript-amazon-project-main.git
-    cd javascript-amazon-project-main
-    ```
-
-2. **(Optional) Start Backend:**
-
-    ```bash
-    cd backend
-    npm install
-    node index.js
-    ```
-
-3. **Launch the App:**
-
-    - For static pages: Open `amazon.html` (and others) directly in your browser.
-    - For backend features: Serve the project root (e.g., with Live Server).
-
-4. **Navigate:**
-
-    - `amazon.html` → `checkout.html` → `orders.html` → `tracking.html`
-
----
-
-Enjoy exploring and customizing your own Amazon-like shopping experience!
+![Product listing](./image/Screenshot%202025-06-22%20183906.png)
+![Checkout](./image/Screenshot%202025-06-22%20183935.png)
